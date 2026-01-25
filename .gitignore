@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+thermal_motion_ports.json
+*.log
+
+# Audio files (keep in Downloads, not in repo)
+*.wav
+
+# Data files (experiment output)
+*.txt
+!README.md
+!PROJECT_STRUCTURE.txt
+!QUICK_REFERENCE.txt
+!REORGANIZATION_SUMMARY.txt
+!FIXES_APPLIED.txt
+!FIX_QUESTION_SKIP.txt

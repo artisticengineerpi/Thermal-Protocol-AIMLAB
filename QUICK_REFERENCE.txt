@@ -1,0 +1,144 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                   THERMAL MOTION EXPERIMENT                                ║
+║                      QUICK REFERENCE CARD                                  ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Author: Pi Ko (pi.ko@nyu.edu) | AIMLAB - NYU Abu Dhabi | 25 January 2026
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🚀 QUICK START                                                             │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  START EXPERIMENT → Double-click: a.bat
+  
+  OR from command line:
+    python thermal_motion_cli_v2.py
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📁 FOLDER STRUCTURE                                                        │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  ROOT/                          ← Essential files only
+  ├── a.bat                      ← Double-click to start ⭐
+  ├── thermal_motion_cli_v2.py   ← Main application ⭐
+  ├── thermal_motion_ports.json  ← Auto-generated cache
+  ├── thermal.ico                ← Icon
+  ├── README.md                  ← Full documentation
+  └── PROJECT_STRUCTURE.txt      ← This structure overview
+  
+  archive/                       ← Old versions (for reference)
+  └── [5 old Python files]
+  
+  utilities/                     ← Standalone tools
+  └── trigger_sender.py          ← Test EEG triggers ⭐
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚡ COMMON TASKS                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Run Experiment:
+    → Double-click a.bat
+  
+  Test EEG Triggers Only:
+    → python utilities\trigger_sender.py
+  
+  Force Device Re-scan:
+    → Delete thermal_motion_ports.json
+    → Restart application
+  
+  View Documentation:
+    → Open README.md (full guide)
+    → Open PROJECT_STRUCTURE.txt (structure)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🔧 TROUBLESHOOTING                                                         │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Arduino Not Detected:
+    ✓ Check USB connections
+    ✓ Delete thermal_motion_ports.json
+    ✓ Restart application
+  
+  EEG Triggers Not Working:
+    ✓ Run: python utilities\trigger_sender.py
+    ✓ Verify COM4 is available
+    ✓ Test each trigger (press 1-9)
+  
+  Audio Not Working:
+    ✓ Check Downloads folder has:
+      - t0500hz.wav
+      - t1000hz.wav
+    ✓ System works without audio (non-critical)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🎮 KEYBOARD CONTROLS                                                       │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Main Menu:
+    1-4     Select condition
+    M       Change mode
+    R       Reconnect devices
+    Q       Quit
+    SPACE   Start trial
+    ESC     Cancel
+  
+  Response (Experiment Mode):
+    Numpad 1-5  Participant responses
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📊 EXPERIMENT MODES                                                        │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  [1] FULL EXPERIMENT (160 trials)
+      • 5 blocks × 32 trials
+      • 60-second breaks
+      • Latin square design
+  
+  [2] SINGLE TRIAL (Manual selection)
+      • Test specific conditions
+      • Practice trials
+  
+  [3] DEBUG (Hardware testing)
+      • No triggers/audio
+      • Direct testing
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚠️  IMPORTANT NOTES                                                        │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  • a.bat ONLY runs thermal_motion_cli_v2.py (current version)
+  • Files in archive/ are NOT used by a.bat
+  • Files in utilities/ run independently
+  • All device connections are auto-detected
+  • Port cache speeds up startup (safe to delete if issues)
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📦 REQUIRED HARDWARE                                                       │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  ✓ Peltier Controller (Arduino) - USB
+  ✓ Motor Controller (Arduino) - USB
+  ✓ EEG Trigger Box - COM4
+  ✓ Primary Monitor - Experimenter
+  ✓ Secondary Monitor - Participant
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📥 REQUIRED SOFTWARE                                                       │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Python Packages:
+    pip install pyserial tqdm colorama keyboard
+  
+  Audio Files (in Downloads/):
+    t0500hz.wav
+    t1000hz.wav
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📞 SUPPORT                                                                 │
+└────────────────────────────────────────────────────────────────────────────┘
+
+  Pi Ko | pi.ko@nyu.edu | AIMLAB - NYU Abu Dhabi
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║ Keep this reference card handy during experiments!                        ║
+╚════════════════════════════════════════════════════════════════════════════╝

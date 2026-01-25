@@ -1,0 +1,171 @@
+================================================================================
+  THERMAL MOTION EXPERIMENT - PROJECT STRUCTURE
+================================================================================
+
+Author: Pi Ko (pi.ko@nyu.edu)
+Date: 25 January 2026
+Version: 2.2
+
+================================================================================
+DIRECTORY TREE
+================================================================================
+
+Thermal/
+│
+├── 📄 a.bat                                ⭐ DOUBLE-CLICK TO START
+├── 🖼️  thermal.ico                         Application icon
+├── 🐍 thermal_motion_cli_v2.py            ⭐ MAIN APPLICATION (v2.2)
+├── 📊 thermal_motion_ports.json           Auto-generated device cache
+├── 📖 README.md                            Complete documentation
+├── 📋 PROJECT_STRUCTURE.txt               This file
+│
+├── 📦 archive/                             Old versions (reference only)
+│   ├── 📖 README.md                        Archive documentation
+│   ├── 🐍 thermal_motion_cli.py           v1.0 - Original
+│   ├── 🐍 thermal_motion_cli_latinsquare.py     Testing version
+│   ├── 🐍 thermal_motion_cli_v2_latin_ready.py  v2.1 - Development
+│   ├── 🐍 thermal_motion_cli_v2_troublesome.py  Debug version
+│   └── 🐍 thermal_motion_cli_v2 - backup.py     Backup copy
+│
+└── 🔧 utilities/                           Standalone tools
+    ├── 📖 README.md                        Utilities documentation
+    └── 🐍 trigger_sender.py               ⭐ EEG trigger testing tool
+
+================================================================================
+QUICK START
+================================================================================
+
+1. LAUNCH EXPERIMENT:
+   → Double-click: a.bat
+   OR
+   → Run: python thermal_motion_cli_v2.py
+
+2. TEST EEG TRIGGERS:
+   → Run: python utilities\trigger_sender.py
+
+3. VIEW DOCUMENTATION:
+   → Open: README.md
+
+================================================================================
+FILE USAGE SUMMARY
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ACTIVE FILES (Used by a.bat)                                        │
+├─────────────────────────────────────────────────────────────────────┤
+│ ✅ a.bat                          Launcher script                   │
+│ ✅ thermal_motion_cli_v2.py       Main application                  │
+│ ✅ thermal_motion_ports.json      Device cache (auto-generated)     │
+│ ✅ thermal.ico                    Icon                              │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ ARCHIVED FILES (Not used - reference only)                          │
+├─────────────────────────────────────────────────────────────────────┤
+│ 📦 archive/thermal_motion_cli.py                                    │
+│ 📦 archive/thermal_motion_cli_latinsquare.py                        │
+│ 📦 archive/thermal_motion_cli_v2_latin_ready.py                     │
+│ 📦 archive/thermal_motion_cli_v2_troublesome.py                     │
+│ 📦 archive/thermal_motion_cli_v2 - backup.py                        │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ UTILITY FILES (Run separately when needed)                          │
+├─────────────────────────────────────────────────────────────────────┤
+│ 🔧 utilities/trigger_sender.py   EEG trigger testing tool          │
+└─────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+EXTERNAL DEPENDENCIES
+================================================================================
+
+Required in Downloads Folder:
+  • t0500hz.wav                     500Hz tone (trial start, question)
+  • t1000hz.wav                     1000Hz tone (stimulation start)
+
+Required Hardware (USB Connected):
+  • Peltier Controller (Arduino)   Auto-detected
+  • Motor Controller (Arduino)      Auto-detected
+  • EEG Trigger Box (COM4)          Auto-detected in experiment mode
+
+Required Python Packages:
+  • pyserial                        pip install pyserial
+  • tqdm                            pip install tqdm
+  • colorama                        pip install colorama
+  • keyboard                        pip install keyboard
+
+================================================================================
+COMMON TASKS
+================================================================================
+
+START EXPERIMENT:
+  → Double-click: a.bat
+
+TEST EEG TRIGGERS:
+  → cd utilities
+  → python trigger_sender.py
+
+FORCE DEVICE RE-DETECTION:
+  → Delete: thermal_motion_ports.json
+  → Restart application
+
+TROUBLESHOOT CONNECTIONS:
+  → Run utilities/trigger_sender.py to test trigger box
+  → Check Device Manager for COM ports
+  → Try different USB ports
+
+VIEW OLD VERSIONS:
+  → Browse: archive/ folder
+  → Read: archive/README.md for details
+
+================================================================================
+EXPERIMENT MODES
+================================================================================
+
+1. FULL EXPERIMENT MODE (Recommended for data collection)
+   • 160 trials (5 blocks × 32 trials)
+   • Latin square counterbalanced design
+   • 60-second breaks between blocks
+   • EEG triggers enabled
+   • Audio cues enabled
+   • Browser display on secondary monitor
+
+2. SINGLE TRIAL MODE (Good for testing/practice)
+   • Manual condition selection
+   • EEG triggers enabled
+   • Audio cues enabled
+   • Browser display enabled
+
+3. DEBUG MODE (Hardware testing)
+   • No triggers
+   • No audio
+   • No browser display
+   • Direct stimulation testing
+
+================================================================================
+VERSION INFORMATION
+================================================================================
+
+Current Version: 2.2 (12 December 2025)
+  • Full experiment mode with Latin square (160 trials)
+  • Inter-block breaks with countdown
+  • Progress tracking in CLI
+  • Enhanced experiment runner
+
+Previous Versions (in archive/):
+  • v2.1 - Browser display implementation
+  • v2.0 - Experiment and debug modes, auto-detection
+  • v1.0 - Original CLI implementation
+
+================================================================================
+SUPPORT
+================================================================================
+
+For issues, questions, or contributions:
+  Author: Pi Ko
+  Email:  pi.ko@nyu.edu
+  Lab:    AIMLAB - NYU Abu Dhabi
+
+================================================================================
+END OF PROJECT STRUCTURE
+================================================================================
