@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {Uno} from './serial.mjs';
+let commands=[];const u=new Uno(()=>{});u.ready=true;
+u.writer={write:async bytes=>{const line=new TextDecoder().decode(bytes).trim();commands.push(line);if(line.startsWith('RUN')){queueMicrotask(()=>{u.line('ACK RUN D');u.line('DONE RUN D');});}}};
+await u.stimulate('D',{polarity:'C',thermalPwm:159},new AbortController().signal);
+assert.equal(commands[0],'RUN D C 159 255 255 255 255 0 5000');assert.equal(u.live,false);assert.equal(u.pending.size,0);
+u.writer={write:async bytes=>{if(new TextDecoder().decode(bytes).startsWith('RUN'))queueMicrotask(()=>u.line('FAULT HEARTBEAT'));}};
+await assert.rejects(u.stimulate('D',{polarity:'C',thermalPwm:159},new AbortController().signal),/FAULT HEARTBEAT/);
+assert.equal(u.pending.size,0);assert.equal(u.live,false);
+const abort=new AbortController();u.writer={write:async()=>{queueMicrotask(()=>abort.abort());}};
+await assert.rejects(u.stimulate('D',{polarity:'C',thermalPwm:159},abort.signal),/Stopped/);assert.equal(u.pending.size,0);
+await assert.rejects(u.expect(()=>false,10),/timed out/);
+u.writer={write:async bytes=>{const command=new TextDecoder().decode(bytes).trim();assert.ok(['PING','STATUS'].includes(command));if(command==='PING')queueMicrotask(()=>u.line('PONG'));else u.line('Mode: IDLE | Peltier PWM=0 polarity=HOT | Motors PWM=0,0,0,0');}};
+assert.ok(await u.testConnection()>=0);assert.equal(u.ready,true);
+assert.equal(u.telemetry.thermal,0);assert.deepEqual(u.telemetry.motors,[0,0,0,0]);
+u.live=true;
+u.writer={write:async bytes=>{assert.equal(new TextDecoder().decode(bytes).trim(),'SET H 160 190 180 170 160');queueMicrotask(()=>u.line('ACK SET'));}};
+assert.equal(await u.settings({polarity:'H',thermalPwm:160,motorPwms:[190,180,170,160]}),true);u.live=false;
+u.writer={write:async()=>{throw new Error('Cable unplugged');}};
+await assert.rejects(u.testConnection(),/Cable unplugged/);assert.equal(u.ready,false);assert.equal(u.pending.size,0);
+console.log('PASS: serial command, matching ACK/DONE, firmware fault, abort cleanup, acknowledgement timeout.');
+

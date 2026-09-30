@@ -1,0 +1,143 @@
+AIMLAB -- CHECK-ALONG GUIDE
+==========================
+
+DEFAULTS (mean of the six plotted participants)
+  Motors: 188.67 -> 189 PWM for each motor.
+  Peltier: 183.33 -> 183 PWM, HOT.
+  PWM is drive power setting, NOT temperature in degrees.
+  Motion: 4.0 seconds. Start lead: 980 ms.
+  Calibrate: motor PWM (0-255) and lead (0-2000 ms).
+  Lock calibration before the experiment. No EEG.
+  Older saved sessions keep their original settings.
+
+CONNECT AND START
+  [Power OFF before changing wires]
+                 |
+  [Peltier -> L298N OUT1 + OUT2, keeping tested orientation]
+  [Uno D9 -> ENA | D8 -> IN1 | D7 -> IN2]
+  [Remove ENA jumper so D9 controls PWM]
+  [Uno GND + driver GND + supply negative -> common ground]
+  [External supply positive -> driver motor-supply/Vs terminal]
+                 |
+  [Keep the tested supply, logic-5V arrangement, heatsink and fan]
+  [Do NOT power the Peltier from Uno 5V or an Uno output pin]
+                 |
+  [USB: Uno -> laptop; power the sleeve with its tested supply]
+                 |
+  [Close browser serial connection + Arduino Serial Monitor]
+                 |
+  [Launch PsychoPy.bat -> participant ID -> audio output]
+                 |
+  [Wait for the green connection dot]
+                 |
+  [Test cues -> Test M1/M2/M3/M4 -> Thermal -> Combined]
+                 |
+  [Adjust motor + lead -> Save calibration -> Lock & start]
+                 |
+  [Space begins the experiment]
+
+  Current pins: M1 D5 | M2 D6 | M3 D3 | M4 D11.
+  Use firmware/Peltier_V3/Peltier_V3.ino if the board needs v7.
+  Arduino IDE: board Arduino Uno; select its COM port; upload.
+  Then CLOSE Serial Monitor before launching PsychoPy.
+
+  L298N logic-power note:
+  ENA jumper and 5V-EN/regulator jumper are different.
+  Keep the existing tested 5V wiring. If the module regulator is ON,
+  do not tie its 5V output to Uno 5V. If regulator is OFF, the module
+  needs the correct regulated logic-5V input for that board.
+  The terminal marked '12V' is the motor-supply input label, not an
+  instruction to change your tested supply to 12V.
+
+ONE TRIAL
+  [500 Hz beep + fixation cross: random 3.0-4.5 s]
+                         |
+  [1000 Hz beep + blank screen + start condition]
+                         |
+  [Uno finishes -> confirms ALL outputs OFF]
+                         |
+  [500 Hz beep + question -> wait 1.0 s]
+                         |
+  [Choose 1-5; no time limit -> response saved]
+                         |
+  [Next trial; after 32 trials -> break 60 s -> Space]
+
+  Responses: 1 No sensation      2 Static thermal
+             3 Moving vibration 4 Moving thermal   5 Not sure
+
+CONDITIONS -- A LETTER IS THE STIMULUS, NOT THE RESPONSE
+  A = No stimulation ............. 5.0 s
+  B = Thermal only ............... 5.0 s
+  C = Moving vibration ........... 4.0 s
+  D = Combined ................... lead + 4.0 s
+  Thermal-only stays 5 s to match the existing v7 firmware.
+  At the default 980 ms lead, D lasts 4.98 s.
+
+COMBINED TIMELINE (motor motion is unchanged by lead)
+  RUN      <------ selected lead ------> <---- motion: 4.0 s ---->
+  Peltier     ON ============================================ OFF
+  Motors                                  M1 -> M2 -> M3 -> M4
+  Peltier enables 50 ms after RUN for electrical settling.
+  It turns OFF only when the complete motor stroke ends.
+
+  Relative to motor-motion start:
+  Time (s)  0.0    0.8    1.6    2.4    3.2    4.0
+  M1        [-------------]
+  M2               [-------------]
+  M3                      [-------------]
+  M4                             [-------------]
+  Each motor: 0.4 s rise + 0.8 s steady + 0.4 s fall = 1.6 s.
+  SOA = start-to-start gap = 0.8 s. Neighbours overlap.
+
+LATIN SQUARE -- SAME ORDER IN EACH BLOCK
+              First half        Repeat
+  Row 1       A B D C           A B D C
+  Row 2       B C A D           B C A D
+  Row 3       C D B A           C D B A
+  Row 4       D A C B           D A C B
+  Read DOWN all four rows in the first half, THEN the repeat.
+
+  Trial:  01 02 03 04 | 05 06 07 08 | 09 10 11 12 | 13 14 15 16
+  Type:    A  B  D  C |  B  C  A  D |  C  D  B  A |  D  A  C  B
+  Trial:  17 18 19 20 | 21 22 23 24 | 25 26 27 28 | 29 30 31 32
+  Type:    A  B  D  C |  B  C  A  D |  C  D  B  A |  D  A  C  B
+
+  [ ] Block 1:   1-32   -> 60 s break -> Space
+  [ ] Block 2:  33-64   -> 60 s break -> Space
+  [ ] Block 3:  65-96   -> 60 s break -> Space
+  [ ] Block 4:  97-128  -> 60 s break -> Space
+  [ ] Block 5: 129-160  -> finished; data saved
+
+  5 blocks x 32 = 160 trials. Each condition appears 40 times.
+  Seed changes fixation times only; Latin order stays fixed.
+
+STATUS AND STOP
+  Small dot at top right: GREEN = fresh Uno replies; RED = otherwise.
+  No connection text or stop/quit buttons are shown.
+  Channel PWM values appear on the calibration screen.
+
+  STATUS every 100 ms; PING every 200 ms.
+  A missing reply for 650 ms faults the connection.
+  Uno switches off a protocol run after 750 ms without PING.
+
+  [Connection lost] -> [trial aborted; not counted]
+           -> [reconnect + verify outputs OFF]
+           -> [paused: Space repeats that same trial]
+
+  Esc = stop/pause. Q = quit from calibration/pause/completion.
+  Resume Session.bat = reopen an unfinished saved session.
+  Check Connection.bat = standalone no-stimulation connection test;
+  close PsychoPy/web serial first. Do not run two serial owners.
+
+WHAT 'CONNECTED' MEANS
+  It confirms USB communication with the correct Uno firmware.
+  It does NOT prove the Peltier cable is connected or heating,
+  nor that a motor is physically vibrating. There are no sensors.
+  Physical fault detection needs added temperature/current sensing.
+
+DATA: data/<participant_timestamp>/
+  trials.csv = completed + aborted attempts, responses and settings.
+  session.json = saved configuration and progress.
+  events.jsonl = cues, display phases, connection and PWM reports.
+
+SETUP: Support hand/arm on an insulating armrest, not a cold table.

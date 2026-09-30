@@ -1,0 +1,70 @@
+AIMLAB -- PROTOCOL AT A GLANCE
+=============================
+
+  USB + sleeve power
+         |
+  Launch PsychoPy -> participant ID -> CONNECTED
+         |
+  Test cues + each motor + Thermal + Combined
+         |
+  Calibrate MOTOR PWM and PELTIER LEAD -> Save -> Lock -> Space
+         |
+  [32 trials] -> [60 s break + Space]  x 4
+         |
+  [last 32 trials] -> FINISHED: 160 trials saved
+
+DEFAULTS
+  Motors 189 PWM | Peltier HOT 183 PWM | Motion 4.0 s
+  Lead starts at 980 ms. Adjust 0-2000 ms; motor 0-255 PWM.
+  PWM is not temperature. Settings lock when experiment starts.
+
+ONE TRIAL
+  [500 Hz beep + cross: 3-4.5 s]
+                   |
+  [1000 Hz beep + run A, B, C or D]
+                   |
+  [All outputs OFF confirmed]
+                   |
+  [500 Hz beep + question: wait 1 s]
+                   |
+  [Answer 1-5 -> save -> next trial]
+
+  1 None | 2 Static heat | 3 Moving vibration | 4 Moving heat
+  5 Not sure. No response time limit. No EEG.
+
+LATIN SQUARE
+  A = None (5 s)       B = Thermal (5 s)
+  C = Vibration (4 s)  D = Combined (lead + 4 s)
+
+               Trials 1-16      Trials 17-32
+  Read down:     A B D C           A B D C
+                 B C A D           B C A D
+                 C D B A           C D B A
+                 D A C B           D A C B
+  Finish the LEFT column of rows, then the RIGHT column.
+
+  Same 32-trial order in every block:
+  [ ] Block 1:   1-32      [ ] Block 2:  33-64
+  [ ] Block 3:  65-96      [ ] Block 4:  97-128
+  [ ] Block 5: 129-160
+  40 trials per condition. Seed changes fixation times only.
+
+COMBINED MOTION
+  RUN -> [lead] -> [M1 ----> M2 ----> M3 ----> M4] -> OFF
+         Peltier ON ================================= OFF
+  Peltier enables 50 ms after RUN; stops with the last motor.
+  Motor starts: 0, 0.8, 1.6, 2.4 s after lead.
+  Each motor: rise 0.4 s -> steady 0.8 s -> fall 0.4 s.
+  SOA (gap between starts) = 0.8 s. Motor envelopes overlap.
+
+ALWAYS-VISIBLE LINK STATUS
+  Small dot: GREEN = fresh Uno replies; RED = otherwise.
+  Lost link -> abort attempt -> reconnect + OFF -> PAUSE
+  Space repeats the same trial. Aborted attempts are also saved.
+  Esc stops outputs and pauses; Q then quits. No on-screen quit button.
+  Q quits from pause/calibration/completion.
+  Resume Session.bat continues a saved session.
+
+  Link status confirms Uno replies, not physical heating/vibration.
+  Wiring and launch details: QUICK-PROTOCOL.txt
+  Results: data/<session>/trials.csv

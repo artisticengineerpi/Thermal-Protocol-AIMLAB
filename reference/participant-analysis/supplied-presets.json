@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Default High Intensity 4 s",
+    "settings": {
+      "thermalPwm": 164,
+      "motorPwms": [
+        202,
+        202,
+        202,
+        202
+      ],
+      "masterPwm": 202,
+      "polarity": "H",
+      "thermalLeadMs": 1680,
+      "motionMs": 4100
+    }
+  },
+  {
+    "name": "Default High Intensity 4s 171 Peltier",
+    "settings": {
+      "thermalPwm": 171,
+      "motorPwms": [
+        202,
+        202,
+        202,
+        202
+      ],
+      "masterPwm": 202,
+      "polarity": "H",
+      "thermalLeadMs": 1680,
+      "motionMs": 4100
+    }
+  },
+  {
+    "name": "Default High Intensity 4s 188 Peltier",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        202,
+        202,
+        202,
+        202
+      ],
+      "masterPwm": 202,
+      "polarity": "C",
+      "thermalLeadMs": 1680,
+      "motionMs": 4100
+    }
+  },
+  {
+    "name": "Default 224 Motor - 4s 188 Peltier -7 point 15 volt maxamp H",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "H",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    }
+  },
+  {
+    "name": "Default 224 Motor - 4s 160 Peltier -7 point 15 volt maxamp H",
+    "settings": {
+      "thermalPwm": 160,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "H",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    }
+  },
+  {
+    "name": "P1",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "C",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    }
+  },
+  {
+    "name": "P2 Hot DIscrete vibration",
+    "settings": {
+      "thermalPwm": 160,
+      "motorPwms": [
+        146,
+        146,
+        146,
+        146
+      ],
+      "masterPwm": 146,
+      "polarity": "C",
+      "thermalLeadMs": 970,
+      "motionMs": 4000
+    }
+  },
+  {
+    "name": "P4",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        186,
+        186,
+        186,
+        186
+      ],
+      "masterPwm": 186,
+      "polarity": "H",
+      "thermalLeadMs": 270,
+      "motionMs": 4000
+    }
+  },
+  {
+    "name": "P5 - f",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "masterPwm": 128,
+      "polarity": "C",
+      "thermalLeadMs": 980,
+      "motionMs": 4000
+    }
+  }
+]

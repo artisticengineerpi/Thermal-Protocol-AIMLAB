@@ -1,0 +1,25 @@
+{
+  "utc": "2026-09-30T11:21:33.565246+00:00",
+  "passed": true,
+  "snapshot": {
+    "state": "READY",
+    "detail": "Connected; outputs OFF",
+    "port": "COM3",
+    "firmware": "AIMLAB_COMBINED_V7",
+    "generation": 1,
+    "fault_count": 0,
+    "telemetry": {
+      "mode": "IDLE",
+      "thermal": 0,
+      "motors": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "polarity": "HOT"
+    },
+    "status_at": 430015.828
+  },
+  "scope": "USB firmware handshake and reported all-OFF outputs only; no stimulation or physical sensor check"
+}

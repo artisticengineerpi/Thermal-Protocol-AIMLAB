@@ -1,0 +1,18 @@
+{
+  "thermal_pwm": 183,
+  "polarity": "H",
+  "motion_ms": 4000,
+  "initial_motor_pwm": 189,
+  "initial_lead_ms": 980,
+  "fixation_min_s": 3.0,
+  "fixation_max_s": 4.5,
+  "response_delay_s": 1.0,
+  "break_s": 60,
+  "tone_duration_s": 0.15,
+  "blocks": 5,
+  "row_repetitions": 2,
+  "preferred_port": null,
+  "audio_device": "Speakers (Realtek(R) Audio)",
+  "fullscreen": false,
+  "screen": 0
+}

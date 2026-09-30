@@ -1,0 +1,122 @@
+[
+  {
+    "participant": "P1",
+    "preset": "P1",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "H",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    },
+    "mapping": "named preset",
+    "note": "Reported thermal motion; somewhat discrete.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  },
+  {
+    "participant": "P2",
+    "preset": "P2 Hot DIscrete vibration",
+    "settings": {
+      "thermalPwm": 160,
+      "motorPwms": [
+        146,
+        146,
+        146,
+        146
+      ],
+      "masterPwm": 146,
+      "polarity": "H",
+      "thermalLeadMs": 970,
+      "motionMs": 4000
+    },
+    "mapping": "named preset",
+    "note": "Preferred lower heat. Lower vibration intensity felt continuous; reported upward heat movement.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  },
+  {
+    "participant": "P3",
+    "preset": "Default 224 Motor - 4s 188 Peltier -7 point 15 volt maxamp H",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "H",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    },
+    "mapping": "explicit user note",
+    "note": "Comfortable with high heat; no illusion, heat felt static. User explicitly identified the default preset.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  },
+  {
+    "participant": "P4",
+    "preset": "P4",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        186,
+        186,
+        186,
+        186
+      ],
+      "masterPwm": 186,
+      "polarity": "H",
+      "thermalLeadMs": 270,
+      "motionMs": 4000
+    },
+    "mapping": "named preset",
+    "note": "Continuous motion; comfortable temperature; no clear thermal illusion, mixed response. Female noted.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  },
+  {
+    "participant": "P5",
+    "preset": "P5 - f",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "masterPwm": 128,
+      "polarity": "H",
+      "thermalLeadMs": 980,
+      "motionMs": 4000
+    },
+    "mapping": "named preset",
+    "note": "Partially worked; comfortable with high heat. Female noted.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  },
+  {
+    "participant": "P6",
+    "preset": "Default 224 Motor - 4s 188 Peltier -7 point 15 volt maxamp H",
+    "settings": {
+      "thermalPwm": 188,
+      "motorPwms": [
+        224,
+        224,
+        224,
+        224
+      ],
+      "masterPwm": 224,
+      "polarity": "H",
+      "thermalLeadMs": 2000,
+      "motionMs": 4000
+    },
+    "mapping": "User confirmed default; mapped to same default as P3",
+    "note": "Partial moving sensation, described as independent of vibration intensity. Strong at forearm, movement toward elbow. Heat felt at back rather than front even with 2 s lead; nevertheless reported heat movement. Slight movement with cold.",
+    "polaritySource": "User correction: all six were HOT; saved C flags were preset-saving artifacts"
+  }
+]

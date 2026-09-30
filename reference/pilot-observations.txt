@@ -1,0 +1,20 @@
+STERN pilot observations supplied by the researcher
+Consolidated 2026-09-30. Informal exploratory notes, not outcome validation.
+
+All plotted participant presets were HOT. Saved C flags were preset-saving artifacts, per researcher correction. P3 and P6 used default motor 224, Peltier 188, lead 2000 ms, motion 4000 ms.
+
+P1: motor 224 / lead 2000 ms / thermal 188. Thermal motion felt, somewhat discrete.
+P2: motor 146 / lead 970 ms / thermal 160. Preferred lower heat; lower intensity felt more continuous; heat moved upward.
+P3: motor 224 / lead 2000 ms / thermal 188. High heat comfortable; did not feel illusion; heat static.
+P4: motor 186 / lead 270 ms / thermal 188. Continuous motion, comfortable temperature; no clear thermal illusion / split sensation. Female per notes.
+P5: motor 128 / lead 980 ms / thermal 188. Partially worked; high heat comfortable. Female per notes.
+P6: default as P3. Partial heat movement; stronger at forearm, movement toward elbow; heat felt at back rather than front even with 2 s lead. Separate cold test reportedly produced slight movement.
+Additional female participant (not assigned a participant ID or complete preset): reported approximately 180 PWM was comfortable. Do not invent motor/lead values or append her to the six-participant numeric plots.
+
+Some participants experienced long Peltier leads as separate thermal and vibration sensations. Researcher chose motor intensity and lead as participant-calibratable parameters, with HOT 188 PWM and 4000 ms motor motion fixed for the new study. Historical thermal values are preserved here; calibration seed presets load only motor/lead into the new fixed settings.
+
+The informal initial suggestion of male/female heat tolerance differences is not established by these observations. P4/P5 and the additional female participant also found relatively high drive comfortable. Use individual calibration rather than gender-based rules.
+
+Arm support: researcher noted that a cold tabletop under the hand may create a misleading sensation when the Peltier is on top. Provide an insulating armrest/support to avoid direct cold-table contact and keep placement consistent.
+
+188 and 180 are PWM drive levels, not measured temperatures. No temperature sensor is present in the v7 firmware.
