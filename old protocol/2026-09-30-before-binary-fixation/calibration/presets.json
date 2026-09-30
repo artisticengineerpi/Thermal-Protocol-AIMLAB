@@ -1,0 +1,7 @@
+[
+  {"name": "Pilot mean motor (189 PWM)", "motor_pwm": 189, "lead_ms": 980},
+  {"name": "P1 / P3 / P6", "motor_pwm": 224, "lead_ms": 2000},
+  {"name": "P2 motor / lead", "motor_pwm": 146, "lead_ms": 970},
+  {"name": "P4 motor / lead", "motor_pwm": 186, "lead_ms": 270},
+  {"name": "P5 motor / lead", "motor_pwm": 128, "lead_ms": 980}
+]

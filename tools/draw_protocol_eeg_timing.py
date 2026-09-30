@@ -26,13 +26,13 @@ def arrow(x1,y,x2):
 
 text(65,60,'EXPERIMENT BLOCKS + LATIN SQUARE',26,True)
 text(65,115,'5 blocks × 32 trials = 160 trials',18)
-text(1330,115,'≈47–52 min total',20,True,'right')
+text(1330,115,'≈40–45 min total',20,True,'right')
 for i in range(5):
     x=65+i*260
     box(x,161,225,100)
     text(x+112.5,196,f'BLOCK {i+1}',18,True,'center')
     text(x+112.5,223,'32 trials',15,ha='center')
-    text(x+112.5,248,'≈6 min',11,ha='center')
+    text(x+112.5,248,'≈5 min',11,ha='center')
     if i<4: arrow(x+233,211,x+252)
 text(700,302,'Breaks: 1 min',16,ha='center')
 
@@ -57,7 +57,7 @@ for i,(letter,label) in enumerate([('A','No stimulation'),('B','Thermal only'),
     text(872,y+27,label,18)
 
 ax.plot([65,1330],[805,805],color='#BBBBBB',lw=1)
-for x,label,value in [(65,'EEG gel','15 min'),(535,'Experiment','≈32–37 min'),(1005,'Total','≈47–52 min')]:
+for x,label,value in [(65,'EEG gel','15 min'),(535,'Experiment','≈25–30 min'),(1005,'Total','≈40–45 min')]:
     text(x,844,label,17)
     text(x,885,value,22,True)
 

@@ -19,15 +19,15 @@ DEFAULTS
   PWM is not temperature. Settings lock when experiment starts.
 
 ONE TRIAL
-  [500 Hz beep + cross: 3-4.5 s]
+  [Silent cross: random 1.5 or 2.5 s]
                    |
-  [1000 Hz beep + run A, B, C or D]
+  [1000 Hz beep + white circle + run A, B, C or D]
                    |
   [All outputs OFF confirmed]
                    |
-  [500 Hz beep + question: wait 1 s]
+  [500 Hz beep: 0.15 s; circle remains]
                    |
-  [Answer 1-5 -> save -> next trial]
+  [Question + all options -> answer 1-5 -> save]
 
   1 None | 2 Static heat | 3 Moving vibration | 4 Moving heat
   5 Not sure. No response time limit. No EEG.
@@ -57,8 +57,8 @@ COMBINED MOTION
   Each motor: rise 0.4 s -> steady 0.8 s -> fall 0.4 s.
   SOA (gap between starts) = 0.8 s. Motor envelopes overlap.
 
-ALWAYS-VISIBLE LINK STATUS
-  Small dot: GREEN = fresh Uno replies; RED = otherwise.
+CALIBRATION LINK STATUS
+  Calibration-only dot: GREEN = fresh Uno replies; RED = otherwise.
   Lost link -> abort attempt -> reconnect + OFF -> PAUSE
   Space repeats the same trial. Aborted attempts are also saved.
   Esc stops outputs and pauses; Q then quits. No on-screen quit button.
@@ -68,3 +68,10 @@ ALWAYS-VISIBLE LINK STATUS
   Link status confirms Uno replies, not physical heating/vibration.
   Wiring and launch details: QUICK-PROTOCOL.txt
   Results: data/<session>/trials.csv
+
+PROTOCOL V2
+  Cross and filled white circle: same width/height. No blank phase.
+  No connection icon during experiment; monitoring continues.
+  Recovery fails after 3 failed cycles and 10 s, or 30 s total.
+  Then: stop experiment, save data, show error. Q closes.
+  Earlier sessions require the archived app (before-binary-fixation).

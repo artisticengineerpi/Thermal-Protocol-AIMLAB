@@ -39,10 +39,9 @@ def main():
         app.smoke_test()
         return
     if args.resume:
-        folder = args.resume.resolve()
-        config = json.loads((folder / "session.json").read_text(encoding="utf-8"))["config"]
+        session = Session(args.resume.resolve())
+        config = session.state["config"]
         validate_study(config)
-        session = Session(folder)
     else:
         if not args.participant:
             from psychopy.hardware.speaker import SpeakerDevice
@@ -66,7 +65,7 @@ def main():
                   "screen": config["screen"] if args.screen is None else args.screen,
                   "audio_device": args.audio or config.get("audio_device")}
         trials = sequence(args.seed, config["blocks"], config["row_repetitions"],
-                          config["fixation_choices_s"])
+                          config["fixation_min_s"], config["fixation_max_s"])
         session = Session.create(ROOT / "data", args.participant, config, trials, args.seed)
     if args.port:
         config = {**config, "preferred_port": args.port}

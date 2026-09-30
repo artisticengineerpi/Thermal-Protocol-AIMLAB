@@ -75,7 +75,7 @@ class UnoConnector:
         self.next_status = 0
         self.state = {"state": "SEARCHING", "detail": "Looking for the sleeve Uno",
                       "port": None, "firmware": None, "generation": 0,
-                      "fault_count": 0, "reconnect_failures": 0, "telemetry": None, "status_at": 0}
+                      "fault_count": 0, "telemetry": None, "status_at": 0}
 
     def emit(self, kind, **values):
         try:
@@ -352,7 +352,6 @@ class UnoConnector:
                     except Exception as exc:
                         self.update(state="SEARCHING", detail="Port scan failed; retrying: " + str(exc))
                         self.emit("port_scan_failed", reason=str(exc))
-                        self.update(reconnect_failures=self.state["reconnect_failures"] + 1)
                         retry_at = time.monotonic() + self.retry_s
                         continue
                     if not candidates:
@@ -363,8 +362,6 @@ class UnoConnector:
                             break
                         except Exception as exc:
                             self._drop(f"{port.device}: {exc}. Close the web serial console if it owns this port.")
-                    if not self.serial:
-                        self.update(reconnect_failures=self.state["reconnect_failures"] + 1)
                     retry_at = time.monotonic() + self.retry_s
                 self.quit.wait(.01)
         except Exception as exc:

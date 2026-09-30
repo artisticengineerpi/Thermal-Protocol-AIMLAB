@@ -45,7 +45,7 @@ class Settings:
         return asdict(self)
 
 
-def sequence(seed, blocks=5, repetitions=2, fixation_choices=(1.5, 2.5)):
+def sequence(seed, blocks=5, repetitions=2, fixation_min=3., fixation_max=4.5):
     """Preserve the existing fixed row order. Seed randomizes fixation only."""
     rng = random.Random(seed)
     trials = []
@@ -54,7 +54,7 @@ def sequence(seed, blocks=5, repetitions=2, fixation_choices=(1.5, 2.5)):
         for within, condition in enumerate(block_letters, 1):
             trials.append({"index": len(trials), "block": block, "within": within,
                            "condition": condition,
-                           "fixation_s": rng.choice(fixation_choices)})
+                           "fixation_s": rng.uniform(fixation_min, fixation_max)})
     return trials
 
 
@@ -63,8 +63,8 @@ def validate_study(config):
              config["thermal_pwm"], config["motion_ms"], config["polarity"])
     if config["blocks"] != 5 or config["row_repetitions"] != 2:
         raise ValueError("This study requires 5 blocks and 2 row repetitions (160 trials)")
-    if config.get("protocol_version") != 2 or config.get("fixation_choices_s") != [1.5, 2.5]:
-        raise ValueError("This app requires protocol v2 (silent 1.5/2.5 s fixation). Use the archived app for older sessions.")
-    for field in ("break_s", "tone_duration_s"):
+    if not 0 < config["fixation_min_s"] <= config["fixation_max_s"] <= 30:
+        raise ValueError("Invalid fixation range")
+    for field in ("response_delay_s", "break_s", "tone_duration_s"):
         if not 0 < config[field] <= 120:
             raise ValueError(f"Invalid {field}")

@@ -33,7 +33,7 @@ The app opens native PsychoPy windows; no web server is needed. Choose the actua
 
 ## Display and controls
 
-Black background, white text and a large centered white fixation cross—three times the original size. On calibration only, a small dot at the top right is the connection indicator:
+Black background, white text and a large centered white fixation cross—three times the original size. A small dot at the top right is the only connection indicator:
 
 - **Green:** fresh replies from the expected Uno firmware.
 - **Red:** disconnected, synchronizing or stale replies; the connector retries automatically.
@@ -89,15 +89,15 @@ The seed changes randomized fixation times only. It does not shuffle the Latin r
 ### One trial
 
 ```text
-Silent fixation cross (random choice: 1.5 or 2.5 s)
-    -> 1000 Hz cue + filled white circle + condition A/B/C/D
-    -> Uno completion + confirmed outputs OFF
-    -> 500 Hz cue (150 ms); white circle stays visible
-    -> question and all choices together; receive response; save
-    -> next trial
+500 Hz cue + fixation cross (random 3–4.5 s)
+    → 1000 Hz cue + condition A/B/C/D
+    → Uno completion + confirmed outputs OFF
+    → 500 Hz cue + question; wait 1 s
+    → show choices; receive response; save
+    → next trial
 ```
 
-During stimulation (including combined preheat), a filled white circle replaces the cross on black. Both symbols have the same width and height: 10% of screen height. There is no blank phase or optionless question. No connection indicator appears during the experiment. Response choices are **1 No sensation**, **2 Static thermal**, **3 Moving vibration**, **4 Moving thermal**, **5 Not sure**. There is no response deadline. Reaction time starts at the screen flip that displays the choices; earlier buffered keys are cleared. Responses are recorded independently of the delivered condition.
+During stimulation, the screen is black apart from the connection dot. Response choices are **1 No sensation**, **2 Static thermal**, **3 Moving vibration**, **4 Moving thermal**, **5 Not sure**. There is no response deadline. Reaction time starts at the screen flip that displays the choices; earlier buffered keys are cleared. Responses are recorded independently of the delivered condition.
 
 ### Motion and Peltier timing
 
@@ -110,8 +110,8 @@ For combined stimulation, all motor onsets shift by the calibrated lead. The Pel
 | Part | Estimated time |
 |---|---:|
 | EEG gel preparation | **15 min** |
-| Experiment, including scheduled breaks | **25–30 min** |
-| Gel preparation + experiment | **40–45 min** |
+| Experiment, including scheduled breaks | **32–37 min** |
+| Gel preparation + experiment | **47–52 min** |
 
 Experiment timing assumes the 980 ms lead and average responses of 1–3 seconds. Calibration, extra setup, longer pauses and repeated trials add time.
 
@@ -143,10 +143,6 @@ Link lost → abort and log attempt → discard pending RUN commands
     → reconnect → confirm outputs OFF → pause
     → Space repeats the same uncounted trial from fixation
 ```
-
-During the experiment, recovery stops after **three failed reconnect cycles and at least 10 seconds**, or **30 seconds total**, whichever occurs first. The app saves a `connection_error` with the recorded trials, stops reconnection and shows an error. Space cannot restart this stopped run; Q closes it. Calibration keeps retrying without this limit.
-
-Protocol v2 uses binary fixation timing. Older saved sessions must use the archived app in `old protocol/2026-09-30-before-binary-fixation`; they are rejected before modification by this version.
 
 After identification, reconnection binds to the USB device's VID/PID/serial number, or its COM port if no unique serial number exists. A port change on an adapter without a serial number requires relaunching with the new `--port`.
 

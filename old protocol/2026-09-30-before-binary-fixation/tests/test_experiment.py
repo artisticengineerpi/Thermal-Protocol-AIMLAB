@@ -24,9 +24,6 @@ class FakeLink:
         return SimpleNamespace(id="test-ticket", sent=1., ack=1.01, done_received=5.,
                                finished=5.01, error="")
 
-    def close(self):
-        self.stop()
-
     def stop(self):
         self.stops += 1
 
@@ -36,10 +33,7 @@ class ExperimentTests(unittest.TestCase):
         tmp = tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         self.app = app = ExperimentApp.__new__(ExperimentApp)
-        app.config = {"tone_duration_s": .15}
-        app.recovery_since = None
-        app.recovery_failures = 0
-        app.fixation = app.stimulus_dot = SimpleNamespace(draw=lambda: None)
+        app.config = {"response_delay_s": 1.}
         app.session = Session.create(tmp.name, "TEST", {}, sequence(4), 4)
         app.settings = Settings()
         app.connector = FakeLink()
@@ -69,7 +63,7 @@ class ExperimentTests(unittest.TestCase):
         app.phase_flip()
         self.assertIsNotNone(app.ticket)
         self.step(elapsed=6)
-        self.assertEqual(app.phase, "end_cue")
+        self.assertEqual(app.phase, "response_delay")
         self.step(elapsed=1.1)
         self.assertEqual(app.phase, "response")
         self.step(keys=[("4", .7)], elapsed=.7)
@@ -136,72 +130,20 @@ class ExperimentTests(unittest.TestCase):
         self.assertTrue(app.quit_requested)
         self.assertGreater(app.connector.stops, 0)
 
-    def test_cues_are_silent_fixation_then_start_and_end(self):
-        app = self.app
-        played, drawn = [], []
-        app.tone500, app.tone1000 = "500", "1000"
-        app.play = played.append
-        app.fixation = SimpleNamespace(draw=lambda: drawn.append("cross"))
-        app.stimulus_dot = SimpleNamespace(draw=lambda: drawn.append("circle"))
-        app.text = lambda key, *a, **kw: drawn.append(key)
-        app.begin_attempt()
-        app.phase_flip()
-        self.assertEqual(played, [])
-        self.step(elapsed=.1)
-        self.assertEqual(drawn, ["cross"])
-        self.step(elapsed=3)
-        app.phase_flip()
-        self.assertEqual(played, ["1000"])
-        self.step(elapsed=5)
-        app.phase_flip()
-        self.assertEqual(played, ["1000", "500"])
-        self.step(elapsed=.1)
-        self.assertNotIn("question", drawn)
-        self.step(elapsed=.16)
-        self.assertEqual(app.phase, "response")
-        self.step(elapsed=.01)
-        self.assertIn("question", drawn)
-        self.assertTrue(all("response"+str(i) in drawn for i in range(1,6)))
-
-    def test_recovery_failure_saves_and_prevents_space_restart(self):
-        app = self.app
-        app.begin_attempt()
-        app.connector.state.update(state="DISCONNECTED", fault_count=1, reconnect_failures=0)
-        self.step()
-        app.recovery_since = time.monotonic()-11
-        app.connector.state["reconnect_failures"] = 3
-        self.step()
-        self.assertEqual(app.phase, "connection_error")
-        saved = Session(app.session.folder)
-        self.assertEqual(saved.state["status"], "connection_error")
-        self.assertEqual(saved.state["next_index"], 0)
-        self.assertFalse("active_attempt" in saved.state)
-        app.connector.state["state"] = "READY"
-        self.step(keys=[("space", 0)])
-        self.assertEqual(app.phase, "connection_error")
-
-    def test_recovery_has_total_timeout_even_if_connection_attempt_hangs(self):
-        app = self.app
-        app.connector.state["state"] = "CONNECTING"
-        self.step()
-        app.recovery_since = time.monotonic()-31
-        self.step()
-        self.assertEqual(app.phase, "connection_error")
-
-    def test_connection_dot_only_during_calibration(self):
+    def test_dot_draws_everywhere_without_stop_button(self):
         app = self.app
         app.clicked = False
         app.rect = lambda *a, **kw: None
         app.experiment = lambda *a: None
         app.calibration = lambda *a: None
-        for phase in ("calibration", "instructions", "fixation", "stim", "end_cue",
+        for phase in ("calibration", "instructions", "fixation", "stim", "response_delay",
                       "response", "break", "paused", "complete"):
             calls = []
             app.phase = phase
             app.button = lambda key, *a, **kw: calls.append(key) or False
             app.draw_connection_indicator = lambda: calls.append("dot")
             app.draw([])
-            self.assertEqual(calls, ["dot"] if phase == "calibration" else [], phase)
+            self.assertEqual(calls, ["dot"], phase)
 
 
 if __name__ == "__main__":

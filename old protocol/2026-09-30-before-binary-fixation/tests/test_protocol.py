@@ -19,7 +19,7 @@ class ProtocolTests(unittest.TestCase):
     def test_fixations_are_reproducible(self):
         self.assertEqual(sequence(42), sequence(42))
         self.assertNotEqual(sequence(42), sequence(43))
-        self.assertEqual({t["fixation_s"] for t in sequence(42)}, {1.5, 2.5})
+        self.assertTrue(all(3 <= t["fixation_s"] <= 4.5 for t in sequence(42)))
 
     def test_settings_and_existing_firmware_timing(self):
         s = Settings(146, 970)

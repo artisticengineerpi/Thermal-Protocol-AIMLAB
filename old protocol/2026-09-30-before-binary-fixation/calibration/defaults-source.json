@@ -1,0 +1,14 @@
+{
+  "source": "reference/participant-analysis/participant-mapping.json",
+  "participants": ["P1", "P2", "P3", "P4", "P5", "P6"],
+  "motor_pwm_values": [224, 146, 224, 186, 128, 224],
+  "motor_mean": 188.66666666666666,
+  "motor_default_rounded": 189,
+  "thermal_pwm_values": [188, 160, 188, 188, 188, 188],
+  "thermal_mean": 183.33333333333334,
+  "thermal_default_rounded": 183,
+  "polarity": "H",
+  "motion_ms": 4000,
+  "initial_lead_ms_unchanged": 980,
+  "note": "Arithmetic means, not boxplot medians. Additional female participant has only an approximate report and is not part of the six plotted records. Historical saved sessions and pilot data remain unchanged."
+}

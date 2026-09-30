@@ -31,16 +31,6 @@ class ExperimentApp:
         self.connection_dot = visual.Circle(self.win, radius=.010, units="height",
             pos=(self.win.size[0]/self.win.size[1]/2-.035, .46),
             fillColor="#EF4444", lineColor="#EF4444", autoLog=False)
-        # Both symbols occupy the same square: 10% of screen height.
-        a, b = .05, .0085
-        vertices = [(-b,a),(b,a),(b,b),(a,b),(a,-b),(b,-b),
-                    (b,-a),(-b,-a),(-b,-b),(-a,-b),(-a,b),(-b,b)]
-        self.fixation = visual.ShapeStim(self.win, vertices=vertices, units="height",
-            fillColor=INK, lineColor=INK, autoLog=False)
-        self.stimulus_dot = visual.Circle(self.win, radius=a, units="height",
-            fillColor=INK, lineColor=INK, autoLog=False)
-        self.recovery_since = None
-        self.recovery_failures = 0
         self.was_down = False
         self.clicked = False
         self.texts, self.rects = {}, {}
@@ -257,7 +247,7 @@ class ExperimentApp:
         self.attempt_fault = snapshot["fault_count"]
         self.attempt_generation = snapshot["generation"]
         self.frame_baseline = self.win.nDroppedFrames
-        self.enter("fixation")
+        self.enter("fixation", lambda: self.play(self.tone500))
 
     def send_run(self):
         try:
@@ -297,7 +287,7 @@ class ExperimentApp:
             self.note = "Stopping all outputs."
         elif self.attempt:
             self.abort(reason)
-        elif self.phase not in ("complete", "paused", "connection_error"):
+        elif self.phase not in ("complete", "paused"):
             self.resume_target = "break" if self.phase == "break" else "trial"
             self.note = reason
             self.enter("paused")
@@ -306,39 +296,7 @@ class ExperimentApp:
         event.clearEvents(eventType="keyboard")
         self.response_clock.reset()
 
-    def monitor_recovery(self, snapshot):
-        if self.smoke or self.phase in ("calibration", "complete", "connection_error"):
-            return
-        if snapshot["state"] in ("READY", "RUNNING"):
-            self.recovery_since = None
-            return
-        now = time.monotonic()
-        if self.recovery_since is None:
-            self.recovery_since = now
-            self.recovery_failures = snapshot.get("reconnect_failures", 0)
-            if self.attempt:
-                self.abort("Uno connection interrupted")
-            else:
-                if self.phase != "paused":
-                    self.resume_target = "break" if self.phase == "break" else "trial"
-                self.note = "Uno disconnected. Reconnecting; outputs stopped."
-                self.enter("paused")
-        failures = snapshot.get("reconnect_failures", 0) - self.recovery_failures
-        elapsed = now - self.recovery_since
-        if elapsed >= 30 or (elapsed >= 10 and failures >= 3):
-            self.connector.stop()
-            self.finish_attempt("aborted", "Connection recovery failed")
-            self.note = "Uno connection could not be restored. All recorded data are saved."
-            self.session.state.update(status="connection_error", connection_error={
-                "time": utc_now(), "failed_cycles": failures, "elapsed_s": elapsed,
-                "detail": snapshot.get("detail", "")})
-            self.session.save()
-            self.log("connection_recovery_failed", failures=failures, elapsed_s=elapsed)
-            self.enter("connection_error")
-            self.connector.close()
-
     def experiment(self, snapshot, keys):
-        self.monitor_recovery(snapshot)
         if self.attempt and (snapshot["fault_count"] != self.attempt_fault or
                              snapshot["generation"] != self.attempt_generation):
             self.abort("Uno connection interrupted")
@@ -353,16 +311,16 @@ class ExperimentApp:
             if "space" in pressed and snapshot["state"] == "READY":
                 self.begin_attempt()
         elif self.phase == "fixation":
-            self.fixation.draw()
+            self.text("fixation", "+", 0, 0, .42)
             if elapsed >= self.attempt["fixation_s"]:
                 self.enter("stim", self.send_run)
         elif self.phase == "stim":
-            self.stimulus_dot.draw()
+            # A blank participant display during stimulation, including preheat.
             if self.ticket and self.ticket.finished:
-                self.enter("end_cue", lambda: self.play(self.tone500))
-        elif self.phase == "end_cue":
-            self.stimulus_dot.draw()
-            if elapsed >= self.config["tone_duration_s"]:
+                self.enter("response_delay", lambda: self.play(self.tone500))
+        elif self.phase == "response_delay":
+            self.text("question", "Which sensation did you experience?", 0, .25, .055)
+            if elapsed >= self.config["response_delay_s"]:
                 self.enter("response", self.response_flip)
         elif self.phase == "response":
             self.text("question", "Which sensation did you experience?", 0, .58, .055)
@@ -400,9 +358,6 @@ class ExperimentApp:
                     self.enter("break")
                 else:
                     self.begin_attempt()
-        elif self.phase == "connection_error":
-            self.text("fatal", "Experiment stopped", 0, .3, .08)
-            self.text("fatal_detail", self.note, 0, -.05, .045)
         elif self.phase == "complete":
             self.text("complete", "Thank you", 0, .3, .1)
             self.text("complete_detail", "All 160 responses are saved.", 0, -.08, .05)
@@ -423,8 +378,7 @@ class ExperimentApp:
                 break
             self.win.clearBuffer()
             keys = []
-        if self.phase == "calibration":
-            self.draw_connection_indicator()
+        self.draw_connection_indicator()
 
     def draw_connection_indicator(self):
         color = "#22C55E" if connection_is_fresh(self.snapshot(), time.monotonic()) else "#EF4444"
@@ -436,13 +390,13 @@ class ExperimentApp:
         if "escape" in names:
             self.stop("Stopped by operator")
             keys = []
-        if "q" in names and self.phase in ("calibration", "paused", "complete", "connection_error"):
+        if "q" in names and self.phase in ("calibration", "paused", "complete"):
             self.quit_requested = True
         return keys
 
     def run(self):
         # Compile the participant display text before powering the sleeve.
-        self.fixation.draw()
+        self.text("fixation", "+", 0, 0, .42)
         self.text("question", "Which sensation did you experience?", 0, .58, .055)
         for i, label in RESPONSES.items():
             self.text("response"+str(i), f"{i}     {label}", -.42, .35-(i-1)*.17, .052, align="left")
@@ -507,15 +461,11 @@ class ExperimentApp:
             self.win.getMovieFrame(buffer="front")
             self.win.saveMovieFrames(str(folder / "response-preview.png"))
             self.win.clearBuffer()
-            self.fixation.draw()
+            self.text("fixation", "+", 0, 0, .42)
+            self.draw_connection_indicator()
             self.win.flip()
             self.win.getMovieFrame(buffer="front")
             self.win.saveMovieFrames(str(folder / "fixation-preview.png"))
-            self.win.clearBuffer()
-            self.stimulus_dot.draw()
-            self.win.flip()
-            self.win.getMovieFrame(buffer="front")
-            self.win.saveMovieFrames(str(folder / "stimulation-preview.png"))
-            print("Rendered calibration, response, fixation and stimulation previews. No serial ports opened.")
+            print("Rendered black/white calibration, response and fixation previews. No serial ports opened.")
         finally:
             self.win.close()

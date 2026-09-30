@@ -187,7 +187,6 @@ class ConnectorTests(unittest.TestCase):
         self.link.ports = ports
         self.wait(lambda: self.link.snapshot()["state"] == "READY")
         self.assertGreaterEqual(len(calls), 3)
-        self.assertGreaterEqual(self.link.snapshot()["reconnect_failures"], 2)
 
 
 if __name__ == "__main__":

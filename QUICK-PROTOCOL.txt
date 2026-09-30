@@ -50,15 +50,15 @@ CONNECT AND START
   instruction to change your tested supply to 12V.
 
 ONE TRIAL
-  [500 Hz beep + fixation cross: random 3.0-4.5 s]
+  [Silent fixation cross: random 1.5 or 2.5 s]
                          |
-  [1000 Hz beep + blank screen + start condition]
+  [1000 Hz beep + white circle + start condition]
                          |
   [Uno finishes -> confirms ALL outputs OFF]
                          |
-  [500 Hz beep + question -> wait 1.0 s]
+  [500 Hz beep: 0.15 s; circle remains]
                          |
-  [Choose 1-5; no time limit -> response saved]
+  [Question + all options -> choose 1-5 -> save]
                          |
   [Next trial; after 32 trials -> break 60 s -> Space]
 
@@ -112,7 +112,7 @@ LATIN SQUARE -- SAME ORDER IN EACH BLOCK
   Seed changes fixation times only; Latin order stays fixed.
 
 STATUS AND STOP
-  Small dot at top right: GREEN = fresh Uno replies; RED = otherwise.
+  Calibration-only dot at top right: GREEN = fresh Uno replies; RED = otherwise.
   No connection text or stop/quit buttons are shown.
   Channel PWM values appear on the calibration screen.
 
@@ -141,3 +141,10 @@ DATA: data/<participant_timestamp>/
   events.jsonl = cues, display phases, connection and PWM reports.
 
 SETUP: Support hand/arm on an insulating armrest, not a cold table.
+
+PROTOCOL V2
+  Cross and filled white circle: same width/height. No blank phase.
+  No connection icon during experiment; monitoring continues.
+  Recovery fails after 3 failed cycles and 10 s, or 30 s total.
+  Then: stop experiment, save data, show error. Q closes.
+  Earlier sessions require the archived app (before-binary-fixation).
